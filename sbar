@@ -1,5 +1,15 @@
 #!/bin/env sh
 
+# Config
+
+# Used to update weather
+AREA=Chongqing
+# Battery infomation path
+BAT_PATH=/sys/class/power_supply/BAT1
+# Backlight infomation path
+BACK_PATH=/sys/class/backlight/intel_backlight
+
+
 # INIT
 printf "$$" > ~/.cache/pidofbar
 sec=0
@@ -23,7 +33,7 @@ update_time () {
 }
 
 update_weather () { 
-	weather="$(curl --noproxy "*" -s "wttr.in/Chongqing?format=1"| sed -E "s/^(.).*\+/\1/")" 
+	weather="$(curl --noproxy "*" -s "wttr.in/$AREA?format=1"| sed -E "s/^(.).*\+/\1/")" 
 }
 
 update_wifi () {
@@ -32,8 +42,8 @@ update_wifi () {
 
 update_bat () { 
 	# you might need to change the path depending on your device
-	read -r bat_status </sys/class/power_supply/BAT1/status
-	read -r bat_capacity </sys/class/power_supply/BAT1/capacity
+	read -r bat_status <$BAT_PATH/status
+	read -r bat_capacity <$BAT_PATH/capacity
 	if [ "$bat_status" == Discharging ]; then
 		if [ "$bat_capacity" -gt 95 ]; then
 			bat="  $bat_capacity%"
@@ -58,8 +68,8 @@ update_vol () {
 
 update_backlight () { 
 	# you might need to change the path depending on your device
-	read -r actual_brightness </sys/class/backlight/intel_backlight/actual_brightness
-	read -r max_brightness </sys/class/backlight/intel_backlight/max_brightness
+	read -r actual_brightness <$BACK_PATH/actual_brightness
+	read -r max_brightness <$BACK_PATH/max_brightness
 	backlight=" $((actual_brightness*100/max_brightness))%"
 }
 
