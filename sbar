@@ -98,8 +98,8 @@ trap	"update_vol;display"		"RTMIN"
 trap	"update_backlight;display" 	"RTMIN+1"
 trap	"update_bat;display" 		"RTMIN+2"
 trap 	"update_disk;display"		"RTMIN+3"
-trap 	"update_weather;display"	"RTMIN+4"
-trap 	"update_wifi;display"		"RTMIN+5"
+trap 	"update_wifi;display"		"RTMIN+4"
+trap 	"update_weather;display"	"RTMIN+5"
 # to update it from external commands
 ## kill -m "$(cat ~/.cache/pidofbar)"
 # where m = 34 + n
